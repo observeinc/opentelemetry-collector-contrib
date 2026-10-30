@@ -105,47 +105,47 @@ func TestNumericTagFilterInverted(t *testing.T) {
 		{
 			Desc:     "nonmatching span attribute",
 			Trace:    newTraceIntAttrs(empty, "non_matching", math.MinInt32),
-			Decision: samplingpolicy.Sampled,
+			Decision: samplingpolicy.InvertSampled,
 		},
 		{
 			Desc:     "span attribute at the lower limit",
 			Trace:    newTraceIntAttrs(empty, "example", math.MinInt32),
-			Decision: samplingpolicy.NotSampled,
+			Decision: samplingpolicy.InvertNotSampled,
 		},
 		{
 			Desc:     "resource attribute at the lower limit",
 			Trace:    newTraceIntAttrs(map[string]any{"example": math.MinInt32}, "non_matching", math.MinInt32),
-			Decision: samplingpolicy.NotSampled,
+			Decision: samplingpolicy.InvertNotSampled,
 		},
 		{
 			Desc:     "span attribute at the upper limit",
 			Trace:    newTraceIntAttrs(empty, "example", math.MaxInt32),
-			Decision: samplingpolicy.NotSampled,
+			Decision: samplingpolicy.InvertNotSampled,
 		},
 		{
 			Desc:     "resource attribute at the upper limit",
 			Trace:    newTraceIntAttrs(map[string]any{"example": math.MaxInt32}, "non_matching", math.MaxInt32),
-			Decision: samplingpolicy.NotSampled,
+			Decision: samplingpolicy.InvertNotSampled,
 		},
 		{
 			Desc:     "span attribute below min limit",
 			Trace:    newTraceIntAttrs(empty, "example", math.MinInt32-1),
-			Decision: samplingpolicy.Sampled,
+			Decision: samplingpolicy.InvertSampled,
 		},
 		{
 			Desc:     "resource attribute below min limit",
 			Trace:    newTraceIntAttrs(map[string]any{"example": math.MinInt32 - 1}, "non_matching", math.MinInt32),
-			Decision: samplingpolicy.Sampled,
+			Decision: samplingpolicy.InvertSampled,
 		},
 		{
 			Desc:     "span attribute above max limit",
 			Trace:    newTraceIntAttrs(empty, "example", math.MaxInt32+1),
-			Decision: samplingpolicy.Sampled,
+			Decision: samplingpolicy.InvertSampled,
 		},
 		{
 			Desc:     "resource attribute above max limit",
 			Trace:    newTraceIntAttrs(map[string]any{"example": math.MaxInt32 + 1}, "non_matching", math.MaxInt32+1),
-			Decision: samplingpolicy.Sampled,
+			Decision: samplingpolicy.InvertSampled,
 		},
 	}
 
@@ -216,7 +216,7 @@ func TestNumericTagFilterOptionalBounds(t *testing.T) {
 			max:         nil,
 			value:       200,
 			invertMatch: true,
-			want:        samplingpolicy.NotSampled,
+			want:        samplingpolicy.InvertNotSampled,
 		},
 		{
 			name:        "inverted match - only max set - value below max",
@@ -224,7 +224,7 @@ func TestNumericTagFilterOptionalBounds(t *testing.T) {
 			max:         new(int64(100)),
 			value:       50,
 			invertMatch: true,
-			want:        samplingpolicy.NotSampled,
+			want:        samplingpolicy.InvertNotSampled,
 		},
 	}
 
